@@ -69,6 +69,45 @@ app.delete("/perfil/:id", (req, res) => {
 	});
 });
 
+// Create a new Usuario
+app.post("/user", (req, res) => {
+	const { idusuario, nombre_Usuario, contrasena, idperfil, estado } = req.body;
+	const sql =
+		"INSERT INTO Usuario (idusuario, nombre_Usuario, contrasena, idperfil, estado) VALUES (?, ?, ?, ?, ?)";
+	db.run(sql, [idusuario, nombre_Usuario, contrasena, idperfil, estado], function (err) {
+		if (err) {
+			return res.status(400).json({ error: err.message });
+		}
+		return res.json({ id: this.lastID });
+	});
+});
+
+// Update a Usuario
+app.put("/user/:id", (req, res) => {
+	const { nombre_Usuario, contrasena, idperfil, estado } = req.body;
+	const { id } = req.params;
+	const sql =
+		"UPDATE Usuario SET nombre_Usuario = ?, contrasena = ?, idperfil = ?, estado = ? WHERE idusuario = ?";
+	db.run(sql, [nombre_Usuario, contrasena, idperfil, estado, id], function (err) {
+		if (err) {
+			return res.status(400).json({ error: err.message });
+		}
+		return res.json({ changes: this.changes });
+	});
+});
+
+// Delete a Usuario
+app.delete("/user/:id", (req, res) => {
+	const { id } = req.params;
+	const sql = "DELETE FROM Usuario WHERE idusuario = ?";
+	db.run(sql, id, function (err) {
+		if (err) {
+			return res.status(400).json({ error: err.message });
+		}
+		return res.json({ deleted: this.changes });
+	});
+});
+
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
 });
