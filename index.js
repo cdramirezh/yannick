@@ -12,7 +12,27 @@ let db = new sqlite3.Database("./db.sqlite", err => {
 });
 
 app.get("/users", (req, res) => {
-	const sql = "SELECT * FROM users";
+	const sql = "SELECT * FROM Usuario";
+	db.all(sql, [], (err, rows) => {
+		if (err) {
+			throw err;
+		}
+		res.send(rows);
+	});
+});
+
+app.get("/profile", (req, res) => {
+	const sql = "SELECT * FROM Perfil";
+	db.all(sql, [], (err, rows) => {
+		if (err) {
+			throw err;
+		}
+		res.send(rows);
+	});
+});
+
+app.get("/customer", (req, res) => {
+	const sql = "SELECT * FROM Cliente";
 	db.all(sql, [], (err, rows) => {
 		if (err) {
 			throw err;
