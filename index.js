@@ -1,5 +1,6 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
+const cors = require("cors");
 
 const app = express();
 const port = 3000;
@@ -12,6 +13,7 @@ let db = new sqlite3.Database("./db.sqlite", err => {
 });
 
 app.use(express.json());
+app.use(cors);
 
 app.get("/users", (req, res) => {
 	const sql = "SELECT * FROM Usuario";
