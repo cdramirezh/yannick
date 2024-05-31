@@ -44,6 +44,17 @@ app.get("/customer", (req, res) => {
 });
 
 // Create a new Perfil
+app.post("/perfil", (req, res) => {
+	const { Idperfil, nombreperfil, estado } = req.body;
+	const sql = "INSERT INTO Perfil (Idperfil, nombreperfil, estado) VALUES (?, ?, ?)";
+	db.run(sql, [Idperfil, nombreperfil, estado], function (err) {
+		if (err) {
+			return res.status(400).json({ error: err.message });
+		}
+		return res.json({ id: this.lastID });
+	});
+});
+
 // Update a Perfil
 app.put("/perfil/:id", (req, res) => {
 	const { nombreperfil, estado } = req.body;
