@@ -108,6 +108,74 @@ app.delete("/user/:id", (req, res) => {
 	});
 });
 
+// Create a new Cliente
+app.post("/cliente", (req, res) => {
+	const {
+		Idusuario_clie,
+		nombre1,
+		nombre2,
+		apellido1,
+		apellido2,
+		direccion,
+		movil,
+		correo_electronico,
+		Estado,
+	} = req.body;
+	const sql =
+		"INSERT INTO Cliente (Idusuario_clie, nombre1, nombre2, apellido1, apellido2, direccion, movil, correo_electronico, Estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	db.run(
+		sql,
+		[
+			Idusuario_clie,
+			nombre1,
+			nombre2,
+			apellido1,
+			apellido2,
+			direccion,
+			movil,
+			correo_electronico,
+			Estado,
+		],
+		function (err) {
+			if (err) {
+				return res.status(400).json({ error: err.message });
+			}
+			return res.json({ id: this.lastID });
+		}
+	);
+});
+
+// Update a Cliente
+app.put("/cliente/:id", (req, res) => {
+	const { nombre1, nombre2, apellido1, apellido2, direccion, movil, correo_electronico, Estado } =
+		req.body;
+	const { id } = req.params;
+	const sql =
+		"UPDATE Cliente SET nombre1 = ?, nombre2 = ?, apellido1 = ?, apellido2 = ?, direccion = ?, movil = ?, correo_electronico = ?, Estado = ? WHERE Idusuario_clie = ?";
+	db.run(
+		sql,
+		[nombre1, nombre2, apellido1, apellido2, direccion, movil, correo_electronico, Estado, id],
+		function (err) {
+			if (err) {
+				return res.status(400).json({ error: err.message });
+			}
+			return res.json({ changes: this.changes });
+		}
+	);
+});
+
+// Delete a Cliente
+app.delete("/cliente/:id", (req, res) => {
+	const { id } = req.params;
+	const sql = "DELETE FROM Cliente WHERE Idusuario_clie = ?";
+	db.run(sql, id, function (err) {
+		if (err) {
+			return res.status(400).json({ error: err.message });
+		}
+		return res.json({ deleted: this.changes });
+	});
+});
+
 app.listen(port, () => {
 	console.log(`Server is running on port ${port}`);
 });
