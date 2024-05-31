@@ -13,7 +13,7 @@ let db = new sqlite3.Database("./db.sqlite", err => {
 });
 
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 
 app.get("/users", (req, res) => {
 	const sql = "SELECT * FROM Usuario";
